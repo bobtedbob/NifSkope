@@ -39,8 +39,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QGLFunctions>
 
 #include "glcontrolable.h"
-#include "gl/gltex.h"
-#include "gl/gltools.h"
+#include "gltex.h"
+#include "gltools.h"
 
 //! \file glproperty.h Property classes
 

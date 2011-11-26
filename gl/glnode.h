@@ -35,7 +35,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "glcontrolable.h"
 #include "glproperty.h"
-#include "gl/gltools.h"
+#include "gltools.h"
 
 class Node;
 
