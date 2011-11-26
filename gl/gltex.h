@@ -36,6 +36,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QGLFunctions>
 
 #include "../niftypes.h"
+#include "gltools.h"
 
 class QAction;
 class QFileSystemWatcher;
@@ -48,12 +49,12 @@ class GroupBox;
 /*!
  * This class stores information on all loaded textures, and watches the texture files.
  */
-class TexCache : public QObject, protected QGLFunctions
+class TexCache : public QObject, public GLTools
 {
 	Q_OBJECT
 
 	//! A structure for storing information on a single texture.
-	struct Tex
+	struct Tex : public GLTools
 	{
 		//! The texture file name.
 		QString filename;
@@ -107,7 +108,7 @@ public:
 	//! Remove the path from a filename
 	static QString stripPath( const QString & file, const QString & nifFolder );
 	//! Checks whether the given file can be loaded
-	static bool canLoad( const QString & file );
+	bool canLoad( const QString & file );
 	
 signals:
 	void sigRefresh();

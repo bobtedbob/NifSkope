@@ -36,6 +36,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QGLFunctions>
 #include <QStack>
 
+#include "dds/dds_api.h"
+#include "dds/DirectDrawSurface.h" // unused? check if upstream has cleaner or d
 #include "../niftypes.h"
 
 class AlphaProperty;
@@ -251,6 +253,85 @@ void initializeTextureUnits();
 bool activateTextureUnit( int x );
 void resetTextureUnits();
 
+//! A function for loading textures.
+/*!
+ * Loads a texture pointed to by filepath.
+ * Returns true on success, and throws a QString otherwise.
+ * The parameters format, width, height and mipmaps will be filled with information about
+ * the loaded texture.
+ *
+ * \param filepath The full path to the texture that must be loaded.
+ * \param format Contain the format, for instance "DDS (DXT3)" or "TGA", on successful load.
+ * \param width Contains the texture width on successful load.
+ * \param height Contains the texture height on successful load.
+ * \param mipmaps Contains the number of mipmaps on successful load.
+ * \return true if the load was successful, false otherwise.
+ */
+bool texLoad( const QString & filepath, QString & format, GLuint & width, GLuint & height, GLuint & mipmaps );
+
+//! A function for loading textures.
+/*!
+* Loads a texture pointed to by model index.
+* Returns true on success, and throws a QString otherwise.
+* The parameters format, width, height and mipmaps will be filled with information about
+* the loaded texture.
+*
+* \param iData Reference to pixel data block
+* \param format Contain the format, for instance "DDS (DXT3)" or "TGA", on successful load.
+* \param width Contains the texture width on successful load.
+* \param height Contains the texture height on successful load.
+* \param mipmaps Contains the number of mipmaps on successful load.
+* \return true if the load was successful, false otherwise.
+*/
+bool texLoad( const QModelIndex & iData, QString & format, GLuint & width, GLuint & height, GLuint & mipmaps );
+
+//! A function which checks whether the given file can be loaded.
+/*!
+ * The function checks whether the file exists, is readable, and whether its extension
+ * is that of a supported file format (dds, tga, or bmp).
+ *
+ * \param filepath The full path to the texture that must be checked.
+ */
+bool texCanLoad( const QString & filepath );
+
+//! Save pixel data to a DDS file
+/*!
+ * \param index Reference to pixel data
+ * \param filepath The filepath to write
+ * \param width The width of the texture
+ * \param height The height of the texture
+ * \param mipmaps The number of mipmaps present
+ * \return true if the save was successful, false otherwise
+ */
+bool texSaveDDS( const QModelIndex & index, const QString & filepath, GLuint & width, GLuint & height, GLuint & mipmaps );
+
+//! Save pixel data to a TGA file
+/*!
+ * \param index Reference to pixel data
+ * \param filepath The filepath to write
+ * \param width The width of the texture
+ * \param height The height of the texture
+ * \return true if the save was successful, false otherwise
+ */
+bool texSaveTGA( const QModelIndex & index, const QString & filepath, GLuint & width, GLuint & height );
+
+//! Save a file to pixel data
+/*!
+ * \param filepath The source texture to convert
+ * \param iData The pixel data to write
+ */
+bool texSaveNIF( class NifModel * nif, const QString & filepath, QModelIndex & iData );
+
+int generateMipMaps( int m );
+int texLoadRaw( QIODevice & f, int width, int height, int num_mipmaps, int bpp, int bytespp, const quint32 mask[], bool flipV = false, bool flipH = false, bool rle = false );
+void flipDXT(GLenum, int, int, unsigned char*);
+GLuint texLoadDXT(QIODevice&, GLenum, int, quint32, quint32, quint32, bool);
+GLuint texLoadDXT( DDSFormat &hdr, const quint8 *pixels, uint size );
+GLuint texLoadDDS(QIODevice&, QString&);
+GLuint texLoadTGA( QIODevice & f, QString & texformat );
+GLuint texLoadBMP( QIODevice & f, QString & texformat );
+GLuint texLoadNIF( QIODevice & f, QString & texformat );
+int texLoadPal( QIODevice & f, int width, int height, int num_mipmaps, int bpp, int bytespp, const quint32 colormap[], bool flipV, bool flipH, bool rle );
 };
 
 #define ID2COLORKEY(id) (id + 1)

@@ -39,7 +39,6 @@ HEADERS += \
     gl/glproperty.h \
     gl/glscene.h \
     gl/gltex.h \
-    gl/gltexloaders.h \
     gl/gltools.h \
     gl/marker/constraints.h \
     gl/marker/furniture.h \

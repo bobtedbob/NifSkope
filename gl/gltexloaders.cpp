@@ -30,16 +30,14 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ***** END LICENCE BLOCK *****/
 
-#include <QtCore/QtCore> // extra include to avoid compile error
-#include <QtGui/QtGui>   // dito
-#include "GLee.h"
-#include "gltexloaders.h"
-#include <QtOpenGL>
+#include <QtCore/QtCore>
+#include <QtGui/QtGui> 
+#include <QDebug>
+
 #include "dds/dds_api.h"
 #include "dds/DirectDrawSurface.h" // unused? check if upstream has cleaner or documented API yet
 #include "../nifmodel.h"
-
-#include <QDebug>
+#include "gltools.h"
 
 /*! \file gltexloaders.cpp
  * \brief Texture loading functions.
@@ -93,7 +91,7 @@ bool isPowerOfTwo( unsigned int x )
  * \param m Number of mipmaps that are already in the texture.
  * \return Total number of mipmaps.
  */
-int generateMipMaps( int m )
+int GLTools::generateMipMaps( int m )
 {
 	GLint w = 0, h = 0;
 	
@@ -251,7 +249,7 @@ void convertToRGBA( const quint8 * data, int w, int h, int bytespp, const quint3
 }
 
 //! Load raw pixel data
-int texLoadRaw( QIODevice & f, int width, int height, int num_mipmaps, int bpp, int bytespp, const quint32 mask[], bool flipV = false, bool flipH = false, bool rle = false )
+int GLTools::texLoadRaw( QIODevice & f, int width, int height, int num_mipmaps, int bpp, int bytespp, const quint32 mask[], bool flipV, bool flipH, bool rle)
 {
 	if ( bytespp * 8 != bpp || bpp > 32 || bpp < 8 )
 		throw QString( "unsupported image depth %1 / %2" ).arg( bpp ).arg( bytespp );
@@ -309,7 +307,7 @@ int texLoadRaw( QIODevice & f, int width, int height, int num_mipmaps, int bpp, 
 }
 
 //! Load a palettised texture
-int texLoadPal( QIODevice & f, int width, int height, int num_mipmaps, int bpp, int bytespp, const quint32 colormap[], bool flipV, bool flipH, bool rle )
+int GLTools::texLoadPal( QIODevice & f, int width, int height, int num_mipmaps, int bpp, int bytespp, const quint32 colormap[], bool flipV, bool flipH, bool rle )
 {
 	if ( bpp != 8 || bytespp != 1 )
 		throw QString( "unsupported image depth %1 / %2" ).arg( bpp ).arg( bytespp );
@@ -494,7 +492,7 @@ void flipDXT5Blocks(DXTColorBlock_t *Block, int NumBlocks)
 }
 
 //! Flip DXT blocks vertically (not used in software decompression)
-void flipDXT( GLenum glFormat, int width, int height, unsigned char * image )
+void GLTools::flipDXT( GLenum glFormat, int width, int height, unsigned char * image )
 {
 	int linesize, j;
 
@@ -555,7 +553,7 @@ void flipDXT( GLenum glFormat, int width, int height, unsigned char * image )
  * \param null Flip
  * \return The total number of mipmaps
  */
-GLuint texLoadDXT( QIODevice & f, GLenum /*glFormat*/, int /*blockSize*/, quint32 /*width*/, quint32 /*height*/, quint32 mipmaps, bool /*flipV*/ = false )
+GLuint GLTools::texLoadDXT( QIODevice & f, GLenum /*glFormat*/, int /*blockSize*/, quint32 /*width*/, quint32 /*height*/, quint32 mipmaps, bool /*flipV*/ = false )
 {
 /*
 #ifdef WIN32
@@ -639,7 +637,7 @@ GLuint texLoadDXT( QIODevice & f, GLenum /*glFormat*/, int /*blockSize*/, quint3
 }
 
 //! Load a (possibly compressed) dds texture.
-GLuint texLoadDDS( QIODevice & f, QString & texformat )
+GLuint GLTools::texLoadDDS( QIODevice & f, QString & texformat )
 {
 	char tag[4];
 	f.read(&tag[0], 4);
@@ -723,7 +721,7 @@ GLuint texLoadDDS( QIODevice & f, QString & texformat )
  * \param size The size of the texture
  * \return The total number of mipmaps
  */
-GLuint texLoadDXT( DDSFormat &hdr, const quint8 *pixels, uint size )
+GLuint GLTools::texLoadDXT( DDSFormat &hdr, const quint8 *pixels, uint size )
 {
 	int m = 0;
 	while ( m < (int)hdr.dwMipMapCount )
@@ -773,7 +771,7 @@ GLuint texLoadDXT( DDSFormat &hdr, const quint8 *pixels, uint size )
 #define TGA_GREY_RLE     11
 
 //! Load a TGA texture.
-GLuint texLoadTGA( QIODevice & f, QString & texformat )
+GLuint GLTools::texLoadTGA( QIODevice & f, QString & texformat )
 {
 	// see http://en.wikipedia.org/wiki/Truevision_TGA for a lot of this
 	texformat = "TGA";
@@ -905,7 +903,7 @@ quint16 get16( quint8 * x )
 }
 
 //! Load a BMP texture.
-GLuint texLoadBMP( QIODevice & f, QString & texformat )
+GLuint GLTools::texLoadBMP( QIODevice & f, QString & texformat )
 {
 	// read in bmp header
 	quint8 hdr[54];
@@ -959,7 +957,7 @@ GLuint texLoadBMP( QIODevice & f, QString & texformat )
 }
 
 // (public function, documented in gltexloaders.h)
-bool texLoad( const QModelIndex & iData, QString & texformat, GLuint & width, GLuint & height, GLuint & mipmaps )
+bool GLTools::texLoad( const QModelIndex & iData, QString & texformat, GLuint & width, GLuint & height, GLuint & mipmaps )
 {
 	bool ok = false;
 	const NifModel * nif = qobject_cast<const NifModel *>( iData.model() );
@@ -1098,7 +1096,7 @@ bool texLoad( const QModelIndex & iData, QString & texformat, GLuint & width, GL
 }
 
 //! Load NiPixelData or NiPersistentSrcTextureRendererData from a NifModel
-GLuint texLoadNIF( QIODevice & f, QString & texformat ) {
+GLuint GLTools::texLoadNIF( QIODevice & f, QString & texformat ) {
 	GLuint mipmaps = 0;
 
 	NifModel pix;
@@ -1123,7 +1121,7 @@ GLuint texLoadNIF( QIODevice & f, QString & texformat ) {
 
 
 // (public function, documented in gltexloaders.h)
-bool texLoad( const QString & filepath, QString & format, GLuint & width, GLuint & height, GLuint & mipmaps )
+bool GLTools::texLoad( const QString & filepath, QString & format, GLuint & width, GLuint & height, GLuint & mipmaps )
 {
 	width = height = mipmaps = 0;
 	
@@ -1149,7 +1147,7 @@ bool texLoad( const QString & filepath, QString & format, GLuint & width, GLuint
 }
 	
 // (public function, documented in gltexloaders.h)
-bool texCanLoad( const QString & filepath )
+bool GLTools::texCanLoad( const QString & filepath )
 {
 	QFileInfo i( filepath );
 	return i.exists() && i.isReadable() && 
@@ -1162,7 +1160,7 @@ bool texCanLoad( const QString & filepath )
 }
 
 // (public function, documented in gltexloaders.h)
-bool texSaveDDS( const QModelIndex & index, const QString & filepath, GLuint & width, GLuint & height, GLuint & mipmaps )
+bool GLTools::texSaveDDS( const QModelIndex & index, const QString & filepath, GLuint & width, GLuint & height, GLuint & mipmaps )
 {
 	const NifModel * nif = qobject_cast<const NifModel *>( index.model() );
 	quint32 format = nif->get<quint32>( index, "Pixel Format" );
@@ -1409,7 +1407,7 @@ bool texSaveDDS( const QModelIndex & index, const QString & filepath, GLuint & w
 }
 
 // (public function, documented in gltexloaders.h)
-bool texSaveTGA( const QModelIndex & index, const QString & filepath, GLuint & width, GLuint & height )
+bool GLTools::texSaveTGA( const QModelIndex & index, const QString & filepath, GLuint & width, GLuint & height )
 {
 	//const NifModel * nif = qobject_cast<const NifModel *>( index.model() );
 	QString filename = filepath;
@@ -1514,7 +1512,7 @@ bool texSaveTGA( const QModelIndex & index, const QString & filepath, GLuint & w
 }
 
 // (public function, documented in gltexloaders.h)
-bool texSaveNIF( NifModel * nif, const QString & filepath, QModelIndex & iData )
+bool GLTools::texSaveNIF( NifModel * nif, const QString & filepath, QModelIndex & iData )
 {
 	// Work out the extension and format
 	// If DDS raw, DXT1 or DXT5, copy directly from texture
