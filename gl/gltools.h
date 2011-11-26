@@ -35,6 +35,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <QGLFunctions>
 #include <QStack>
+#include <GL/gl.h>
+#include <GL/glext.h>
 
 #include "dds/dds_api.h"
 #include "dds/DirectDrawSurface.h" // unused? check if upstream has cleaner or d

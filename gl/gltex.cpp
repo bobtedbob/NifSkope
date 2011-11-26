@@ -37,8 +37,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QtCore/QtCore> // extra include to avoid compile error
 #include <QtGui/QtGui>   // dito
 
-#include <QGLFunctions>
-
 #include "glscene.h"
 #include "gltex.h"
 #include "gltools.h"
@@ -93,7 +91,8 @@ bool GLTools::activateTextureUnit( int stage )
 	if ( stage < num_texture_units )
 	{
 		glActiveTexture( GL_TEXTURE0 + stage );
-		glClientActiveTexture( GL_TEXTURE0 + stage );	
+		// FIXME not defined when cross compiling?
+		//glClientActiveTexture( GL_TEXTURE0 + stage );	
 		return true;
 	}
 	return false;
@@ -116,7 +115,8 @@ void GLTools::resetTextureUnits()
 		glMatrixMode( GL_TEXTURE );
 		glLoadIdentity();
 		glMatrixMode( GL_MODELVIEW );
-		glClientActiveTexture( GL_TEXTURE0 + x );
+		// FIXME not defined when cross compiling?
+		//glClientActiveTexture( GL_TEXTURE0 + x );
 		glDisableClientState( GL_TEXTURE_COORD_ARRAY );
 	}
 }
