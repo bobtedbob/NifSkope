@@ -30,18 +30,12 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ***** END LICENCE BLOCK *****/
 
-// include these before GLee.h to avoid linux compile error
 #include <QActionGroup>
 #include <QComboBox>
 #include <QMenu>
 #include <QTimer>
 #include <QToolBar>
 #include <QToolButton>
-#include <QtCore/QtCore> // extra include to avoid compile error
-#include <QtGui/QtGui>   // dito
-
-#include "gl/GLee.h"
-#include <QtOpenGL>
 
 #include "glview.h"
 
@@ -323,16 +317,17 @@ void GLView::updateShaders()
 
 void GLView::initializeGL()
 {
-	initializeTextureUnits( context() );
+	initializeTextureUnits();
 	
-	if ( Renderer::initialize( context() ) )
+	//if ( Renderer::initialize( context() ) )
 		updateShaders();
 
 	// check for errors
 	
 	GLenum err;
-	while ( ( err = glGetError() ) != GL_NO_ERROR )
-		qDebug() << tr("GL ERROR (init) : ") << (const char *) gluErrorString( err );
+	// FIXME
+	//while ( ( err = glGetError() ) != GL_NO_ERROR )
+	//	qDebug() << tr("GL ERROR (init) : ") << (const char *) gluErrorString( err );
 }
 
 void GLView::glProjection( int x, int y )
@@ -553,8 +548,9 @@ void GLView::paintGL()
 	// check for errors
 	
 	GLenum err;
-	while ( ( err = glGetError() ) != GL_NO_ERROR )
-		qDebug() << tr("GL ERROR (paint): ") << (const char *) gluErrorString( err );
+	// FIXME
+	//while ( ( err = glGetError() ) != GL_NO_ERROR )
+        //	qDebug() << tr("GL ERROR (paint): ") << (const char *) gluErrorString( err );
 	
 	// update fps counter
 	if ( fpsacc > 1.0 && fpscnt )

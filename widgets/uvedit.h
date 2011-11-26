@@ -39,6 +39,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QMap>
 #include <QString>
 
+#include "../gl/gltools.h"
+
 class NifModel;
 class QModelIndex;
 class QUndoStack;
@@ -46,9 +48,18 @@ class TexCache;
 class Vector2;
 
 //! Displays and allows editing of UV coordinate data
-class UVWidget : public QGLWidget
+class UVWidget : public QGLWidget, public GLTools
 {
 	Q_OBJECT
+
+private:
+static GLshort vertArray[4][2];
+
+static GLshort texArray[4][2];
+
+static GLdouble glUnit;
+static GLdouble glGridD;
+
 protected:
 	UVWidget( QWidget * parent = 0 );
 	~UVWidget();

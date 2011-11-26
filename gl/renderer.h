@@ -33,19 +33,16 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef GLSHADER_H
 #define GLSHADER_H
 
-#include <QtCore/QtCore> // extra include to avoid compile error
-#include <QtGui/QtGui>   // dito
-
-#include "GLee.h"
-#include <QtOpenGL>
+#include <QGLFunctions>
 
 #include "../nifmodel.h"
+#include "gltools.h"
 
 class Mesh;
 class PropertyList;
 
 //! Manages rendering and shaders?
-class Renderer
+class Renderer : public GLTools
 {
 public:
 	//! Constructor
@@ -54,9 +51,9 @@ public:
 	~Renderer();
 	
 	//! Init from context?
-	static bool initialize( const QGLContext * );
+	bool initialize( const QGLContext * );
 	//! Whether the shaders are available
-	static bool hasShaderSupport();
+	bool hasShaderSupport();
 	
 	//! Updates shaders
 	void updateShaders();
@@ -117,7 +114,7 @@ protected:
 		bool _or;
 	};
 	
-	class Shader
+	class Shader : protected QGLFunctions
 	{
 	public:
 		Shader( const QString & name, GLenum type );
@@ -133,7 +130,7 @@ protected:
 		GLenum	type;
 	};
 	
-	class Program
+	class Program : protected QGLFunctions
 	{
 	public:
 		Program( const QString & name );

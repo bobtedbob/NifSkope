@@ -5,6 +5,10 @@ This is version 1.1.1 of NifSkope.
 changes since 1.1.0:
  * added Skyrim support
 
+changes in qt48-qglfunctions branch:
+ * updated to Qt 4.8
+ * removed GLee in favour of QGLFunctions
+
 changes since 1.1.0-RC1:
  * block number is visible
  * made material editor dialog window modal

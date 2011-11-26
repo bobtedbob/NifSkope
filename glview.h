@@ -33,21 +33,17 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef GLVIEW
 #define GLVIEW
 
-// must come before GLee.h for linux
 #include <QCache>
 #include <QDateTime>
 #include <QFile>
 #include <QStack>
 #include <QQueue>
-#include <QtCore/QtCore> // extra include to avoid compile error
-#include <QtGui/QtGui>   // dito
-
-#include "gl/GLee.h"
 #include <QGLWidget>
 
 #include "nifmodel.h"
 #include "widgets/floatedit.h"
 #include "widgets/floatslider.h"
+#include "gl/gltools.h"
 
 //! \file glview.h GLView class
 
@@ -61,7 +57,7 @@ class QToolBar;
 class QTimer;
 
 //! The model view window
-class GLView : public QGLWidget
+class GLView : public QGLWidget, public GLTools
 {
 	Q_OBJECT
 

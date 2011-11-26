@@ -33,7 +33,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef GLTEX_H
 #define GLTEX_H
 
-#include <QtOpenGL>
+#include <QGLFunctions>
 
 #include "../niftypes.h"
 
@@ -48,7 +48,7 @@ class GroupBox;
 /*!
  * This class stores information on all loaded textures, and watches the texture files.
  */
-class TexCache : public QObject
+class TexCache : public QObject, protected QGLFunctions
 {
 	Q_OBJECT
 
@@ -132,12 +132,5 @@ protected:
 	
 	QString nifFolder;
 };
-
-float get_max_anisotropy();
-
-void initializeTextureUnits( const QGLContext * );	
-
-bool activateTextureUnit( int x );
-void resetTextureUnits();	
 
 #endif

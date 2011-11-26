@@ -208,7 +208,7 @@ BoundSphere operator*( const Transform & t, const BoundSphere & sphere )
  * draw primitives
  */
 
-void drawAxes( Vector3 c, float axis )
+void GLTools::drawAxes( Vector3 c, float axis ) const
 {
 	glPushMatrix();
 	glTranslate( c );
@@ -251,7 +251,7 @@ void drawAxes( Vector3 c, float axis )
 	glPopMatrix();
 }
 
-void drawBox( Vector3 a, Vector3 b )
+void GLTools::drawBox( Vector3 a, Vector3 b ) const
 {
 	glBegin( GL_LINE_STRIP );
 	glVertex3f( a[0], a[1], a[2] );
@@ -279,14 +279,14 @@ void drawBox( Vector3 a, Vector3 b )
 	glEnd();
 }
 
-void drawCircle( Vector3 c, Vector3 n, float r, int sd )
+void GLTools::drawCircle( Vector3 c, Vector3 n, float r, int sd ) const
 {
 	Vector3 x = Vector3::crossproduct( n, Vector3( n[1], n[2], n[0] ) );
 	Vector3 y = Vector3::crossproduct( n, x );
 	drawArc( c, x * r, y * r, - PI, + PI, sd );
 }
 
-void drawArc( Vector3 c, Vector3 x, Vector3 y, float an, float ax, int sd )
+void GLTools::drawArc( Vector3 c, Vector3 x, Vector3 y, float an, float ax, int sd ) const
 {
 	glBegin( GL_LINE_STRIP );
 	for ( int j = 0; j <= sd; j++ )
@@ -298,7 +298,7 @@ void drawArc( Vector3 c, Vector3 x, Vector3 y, float an, float ax, int sd )
 	glEnd();
 }
 
-void drawCone( Vector3 c, Vector3 n, float a, int sd )
+void GLTools::drawCone( Vector3 c, Vector3 n, float a, int sd ) const
 {
 	Vector3 x = Vector3::crossproduct( n, Vector3( n[1], n[2], n[0] ) );
 	Vector3 y = Vector3::crossproduct( n, x );
@@ -330,7 +330,7 @@ void drawCone( Vector3 c, Vector3 n, float a, int sd )
 	glEnd();
 }
 
-void drawRagdollCone( Vector3 pivot, Vector3 twist, Vector3 plane, float coneAngle, float minPlaneAngle, float maxPlaneAngle, int sd )
+void GLTools::drawRagdollCone( Vector3 pivot, Vector3 twist, Vector3 plane, float coneAngle, float minPlaneAngle, float maxPlaneAngle, int sd ) const
 {
 	Vector3 z = twist;
 	Vector3 y = plane;
@@ -367,7 +367,7 @@ void drawRagdollCone( Vector3 pivot, Vector3 twist, Vector3 plane, float coneAng
 	glEnd();
 }
 
-void drawSpring( Vector3 a, Vector3 b, float stiffness, int sd, bool solid )
+void GLTools::drawSpring( Vector3 a, Vector3 b, float stiffness, int sd, bool solid ) const
 {	// draw a spring with stiffness turns
 	bool cull = glIsEnabled( GL_CULL_FACE );
 	glDisable( GL_CULL_FACE );
@@ -411,7 +411,7 @@ void drawSpring( Vector3 a, Vector3 b, float stiffness, int sd, bool solid )
 		glEnable( GL_CULL_FACE );
 }
 
-void drawRail( const Vector3 &a, const Vector3 &b )
+void GLTools::drawRail( const Vector3 &a, const Vector3 &b ) const
 {
 	/* offset between beginning and end points */
 	Vector3 off = b - a;
@@ -448,7 +448,7 @@ void drawRail( const Vector3 &a, const Vector3 &b )
 	glEnd();
 }
 
-void drawSolidArc( Vector3 c, Vector3 n, Vector3 x, Vector3 y, float an, float ax, float r, int sd )
+void GLTools::drawSolidArc( Vector3 c, Vector3 n, Vector3 x, Vector3 y, float an, float ax, float r, int sd ) const
 {
 	bool cull = glIsEnabled( GL_CULL_FACE );
 	glDisable( GL_CULL_FACE );
@@ -465,7 +465,7 @@ void drawSolidArc( Vector3 c, Vector3 n, Vector3 x, Vector3 y, float an, float a
 		glEnable( GL_CULL_FACE );
 }
 
-void drawSphere( Vector3 c, float r, int sd )
+void GLTools::drawSphere( Vector3 c, float r, int sd ) const
 {
 	for ( int j = -sd; j <= sd; j++ )
 	{
@@ -502,7 +502,7 @@ void drawSphere( Vector3 c, float r, int sd )
 	}
 }
 
-void drawCapsule( Vector3 a, Vector3 b, float r, int sd )
+void GLTools::drawCapsule( Vector3 a, Vector3 b, float r, int sd ) const
 {
 	Vector3 d = b - a;
 	if ( d.length() < 0.001 )
@@ -549,7 +549,7 @@ void drawCapsule( Vector3 a, Vector3 b, float r, int sd )
 	}
 }
 
-void drawDashLine( Vector3 a, Vector3 b, int sd )
+void GLTools::drawDashLine( Vector3 a, Vector3 b, int sd ) const
 {
 	Vector3 d = ( b - a ) / float( sd );
 	glBegin( GL_LINES );
@@ -560,7 +560,7 @@ void drawDashLine( Vector3 a, Vector3 b, int sd )
 	glEnd();
 }
 
-void drawConvexHull( QVector<Vector4> vertices, QVector<Vector4> normals )
+void GLTools::drawConvexHull( QVector<Vector4> vertices, QVector<Vector4> normals ) const
 {
 	glBegin( GL_LINES );
 	for ( int i = 1; i < vertices.count(); i++ )
@@ -587,11 +587,11 @@ void drawConvexHull( QVector<Vector4> vertices, QVector<Vector4> normals )
 }
 
 // Renders text using the font initialized in the primary view class
-void renderText(const Vector3& c, const QString & str)
+void GLTools::renderText(const Vector3& c, const QString & str) const
 {
 	renderText(c[0], c[1], c[2], str);
 }
-void renderText(double x, double y, double z, const QString & str)
+void GLTools::renderText(double x, double y, double z, const QString & str) const
 {
 	glPushAttrib(GL_ALL_ATTRIB_BITS);
 

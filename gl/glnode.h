@@ -35,6 +35,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "glcontrolable.h"
 #include "glproperty.h"
+#include "gl/gltools.h"
 
 class Node;
 
@@ -64,7 +65,7 @@ protected:
 	QList<Node*> nodes;
 };
 
-class Node : public Controllable
+class Node : public Controllable, public GLTools
 {
 	typedef union
 	{

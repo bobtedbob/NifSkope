@@ -36,15 +36,16 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QtCore/QtCore> // extra include to avoid compile error
 #include <QtGui/QtGui>   // dito
 
-#include "GLee.h"
-#include <QtOpenGL>
+#include <QGLFunctions>
 
 #include "glcontrolable.h"
+#include "gl/gltex.h"
+#include "gl/gltools.h"
 
 //! \file glproperty.h Property classes
 
 //! Controllable properties attached to nodes and meshes
-class Property : public Controllable
+class Property : public Controllable, public GLTools
 {
 protected:
 	//! Protected constructor; see Controllable()
@@ -145,7 +146,7 @@ public:
 	bool test() const { return alphaTest; }
 	bool sort() const { return alphaSort; }
 	
-	friend void glProperty( AlphaProperty * );
+	friend class GLTools;
 
 protected:
 	bool alphaBlend, alphaTest, alphaSort;
@@ -169,7 +170,7 @@ public:
 	bool test() const { return depthTest; }
 	bool mask() const { return depthMask; }
 	
-	friend void glProperty( ZBufferProperty * );
+	friend class GLTools;
 	
 protected:
 	bool depthTest;
@@ -208,7 +209,7 @@ public:
 	
 	void update( const NifModel * nif, const QModelIndex & block );
 	
-	friend void glProperty( TexturingProperty * );
+	friend class GLTools;
 	
 	bool bind( int id, const QString & fname = QString() );
 	
@@ -242,7 +243,7 @@ public:
 	
 	void update( const NifModel * nif, const QModelIndex & block );
 	
-	friend void glProperty( TextureProperty * );
+	friend class GLTools;
 	
 	bool bind();
 	bool bind( const QList< QVector<Vector2> > & texcoords );
@@ -270,7 +271,7 @@ public:
 	
 	void update( const NifModel * nif, const QModelIndex & block );
 	
-	friend void glProperty( class MaterialProperty *, class SpecularProperty * );
+	friend class GLTools;
 	
 	GLfloat alphaValue() const { return alpha; }
 	
@@ -298,7 +299,7 @@ public:
 
 	void update( const NifModel * nif, const QModelIndex & index );
 	
-	friend void glProperty( class MaterialProperty *, class SpecularProperty * );
+	friend class GLTools;
 	
 protected:
 	bool spec;
@@ -317,7 +318,7 @@ public:
 	
 	void update( const NifModel * nif, const QModelIndex & index );
 	
-	friend void glProperty( WireframeProperty * );
+	friend class GLTools;
 	
 protected:
 	bool wire;
@@ -336,7 +337,7 @@ public:
 	
 	void update( const NifModel * nif, const QModelIndex & index );
 	
-	friend void glProperty( VertexColorProperty *, bool vertexcolors );
+	friend class GLTools;
 
 protected:
 	int	lightmode;
@@ -356,7 +357,7 @@ public:
 	
 	void update( const NifModel * nif, const QModelIndex & index );
 	
-	friend void glProperty( StencilProperty * );
+	friend class GLTools;
 
 protected:
 	bool	stencil;
@@ -386,7 +387,7 @@ public:
 
    void update( const NifModel * nif, const QModelIndex & block );
 
-   friend void glProperty( BSShaderLightingProperty * );
+   friend class GLTools;
 
    bool bind( int id, const QString & fname = QString() );
    bool bind( int id, const QList< QVector<Vector2> > & texcoords );

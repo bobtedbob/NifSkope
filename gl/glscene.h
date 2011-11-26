@@ -37,8 +37,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QtCore/QtCore> // extra include to avoid compile error
 #include <QtGui/QtGui>   // dito
 
-#include "GLee.h"
-#include <QtOpenGL>
+#include <QGLFunctions>
 
 #include "../nifmodel.h"
 
@@ -49,7 +48,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "renderer.h"
 
-class Scene
+class Scene : protected QGLFunctions
 {
 public:
 	Scene( TexCache * texcache );

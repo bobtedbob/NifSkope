@@ -36,10 +36,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QFile>
 #include <QTextStream>
 
-#include <QtCore/QtCore> // extra include to avoid compile error
-#include <QtGui/QtGui>   // dito
-#include "GLee.h"
-
 #include "renderer.h"
 
 #include "gltex.h"
@@ -58,9 +54,8 @@ bool Renderer::initialize( const QGLContext * cx )
 #ifdef DISABLE_SHADERS
         shader_ready = false;
 #else
-        // check for OpenGL 2.0
-        // (we don't use the extension API but the 2.0 API for shaders)
-        if (GLEE_VERSION_2_0)
+        // check for OpenGL 2.0 (i.e. shader support)
+        if (hasOpenGLFeature(QGLFunctions::Shaders))
         {
             shader_ready = true;
         }

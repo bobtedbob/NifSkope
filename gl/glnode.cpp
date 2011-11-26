@@ -876,7 +876,7 @@ void Node::drawSelection() const
 	glEnd();	
 }
 
-void DrawVertexSelection( QVector<Vector3> &verts, int i )
+void GLTools::DrawVertexSelection( QVector<Vector3> &verts, int i ) const
 {
 	glPointSize( 3.5 );
 	glDepthFunc( GL_LEQUAL );
@@ -896,7 +896,7 @@ void DrawVertexSelection( QVector<Vector3> &verts, int i )
 	}
 }
 
-void DrawTriangleSelection( QVector<Vector3> const &verts, Triangle const &tri )
+void GLTools::DrawTriangleSelection( QVector<Vector3> const &verts, Triangle const &tri ) const
 {
 	glLineWidth( 1.5f );
 	glDepthFunc( GL_ALWAYS );
@@ -909,13 +909,13 @@ void DrawTriangleSelection( QVector<Vector3> const &verts, Triangle const &tri )
 	glEnd();
 }
 
-void DrawTriangleIndex( QVector<Vector3> const &verts, Triangle const &tri, int index)
+void GLTools::DrawTriangleIndex( QVector<Vector3> const &verts, Triangle const &tri, int index) const
 {
 	Vector3 c = ( verts.value( tri.v1() ) + verts.value( tri.v2() ) + verts.value( tri.v3() ) ) /  3.0;
 	renderText(c, QString("%1").arg(index));
 }
 
-void drawHvkShape( const NifModel * nif, const QModelIndex & iShape, QStack<QModelIndex> & stack, const Scene * scene, const float origin_color3fv[3] )
+void GLTools::drawHvkShape( const NifModel * nif, const QModelIndex & iShape, QStack<QModelIndex> & stack, const Scene * scene, const float origin_color3fv[3] ) const
 {
 	if ( ! nif || ! iShape.isValid() || stack.contains( iShape ) )
 		return;
@@ -1190,7 +1190,7 @@ void drawHvkShape( const NifModel * nif, const QModelIndex & iShape, QStack<QMod
 	stack.pop();
 }
 
-void drawHvkConstraint( const NifModel * nif, const QModelIndex & iConstraint, const Scene * scene )
+void GLTools::drawHvkConstraint( const NifModel * nif, const QModelIndex & iConstraint, const Scene * scene ) const
 {
 	if ( ! ( nif && iConstraint.isValid() && scene && Options::drawConstraints() ) )
 		return;
@@ -1641,7 +1641,7 @@ void Node::drawHavok()
 	}
 }
 
-void drawFurnitureMarker( const NifModel *nif, const QModelIndex &iPosition )
+void GLTools::drawFurnitureMarker( const NifModel *nif, const QModelIndex &iPosition ) const
 {
 	QString name = nif->itemName( iPosition );
 	Vector3 offs = nif->get<Vector3>( iPosition, "Offset" );

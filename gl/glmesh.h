@@ -34,7 +34,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define GLMESH_H
 
 #include "glnode.h"
-#include "gltools.h"
 
 //! \file glmesh.h Mesh class
 

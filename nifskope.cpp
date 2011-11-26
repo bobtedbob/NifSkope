@@ -43,6 +43,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QAction>
 #include <QApplication>
 #include <QByteArray>
+#include <QComboBox>
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDir>

@@ -30,7 +30,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ***** END LICENCE BLOCK *****/
 
-// include before GLee.h to avoid compile error on linux
 #include <QDebug>
 #include <QDir>
 #include <QFileSystemWatcher>
@@ -38,9 +37,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QtCore/QtCore> // extra include to avoid compile error
 #include <QtGui/QtGui>   // dito
 
-#include "GLee.h"
-
-#include <QtOpenGL>
+#include <QGLFunctions>
 
 #include "glscene.h"
 #include "gltex.h"
@@ -51,22 +48,17 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //! \file gltex.cpp TexCache management
 
-//! Number of texture units
-GLint num_texture_units = 0;
-//! Maximum anisotropy
-float max_anisotropy = 0;
-
 //! Accessor function for glProperty etc.
-float get_max_anisotropy()
+float GLTools::get_max_anisotropy() const
 {
 	return max_anisotropy;
 }
 
-void initializeTextureUnits( const QGLContext * context )
+void GLTools::initializeTextureUnits()
 {
 	// detect maximum number of texture slots
 	// (todo: should we use GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS_ARB or similar?)
-	if ( GLEE_ARB_multitexture )
+	if (hasOpenGLFeature( Multitexture ))
 	{
 		glGetIntegerv( GL_MAX_TEXTURE_UNITS_ARB, &num_texture_units );
 		if ( num_texture_units < 1 )
@@ -78,19 +70,20 @@ void initializeTextureUnits( const QGLContext * context )
 		qWarning( "multitexturing not supported" );
 		num_texture_units = 1;
 	}
-	
+	/*
 	if ( GLEE_EXT_texture_filter_anisotropic )
 	{
 		glGetFloatv( GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, & max_anisotropy );
 		//qWarning() << "maximum anisotropy" << max_anisotropy;
 	}
 	else
+	*/
 	{
 		max_anisotropy = 0;
 	};
 }
 
-bool activateTextureUnit( int stage )
+bool GLTools::activateTextureUnit( int stage )
 {
 	if ( num_texture_units <= 1 )
 		return ( stage == 0 );
@@ -106,7 +99,7 @@ bool activateTextureUnit( int stage )
 	return false;
 }
 
-void resetTextureUnits()
+void GLTools::resetTextureUnits()
 {
 	if ( num_texture_units <= 1 )
 	{

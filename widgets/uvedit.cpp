@@ -71,18 +71,18 @@ UVWidget * UVWidget::createEditor( NifModel * nif, const QModelIndex & idx )
 	return uvw;
 }
 
-static GLshort vertArray[4][2] = {
+GLshort UVWidget::vertArray[4][2] = {
 	{ 0, 0 }, { 1, 0 },
 	{ 1, 1 }, { 0, 1 }
 };
 
-static GLshort texArray[4][2] = {
+GLshort UVWidget::texArray[4][2] = {
 	{ 0, 0 }, { 1, 0 },
 	{ 1, 1 }, { 0, 1 }
 };
 
-static GLdouble glUnit = ( 1.0 / BASESIZE );
-static GLdouble glGridD = GRIDSIZE * glUnit;
+GLdouble UVWidget::glUnit = ( 1.0 / BASESIZE );
+GLdouble UVWidget::glGridD = GRIDSIZE * glUnit;
 
 UVWidget::UVWidget( QWidget * parent )
 	: QGLWidget( QGLFormat( QGL::SampleBuffers ), parent, 0, Qt::Tool | Qt::WindowStaysOnTopHint ), undoStack( new QUndoStack( this ) )
@@ -193,7 +193,7 @@ void UVWidget::initializeGL()
 {
 	glMatrixMode( GL_MODELVIEW );
 
-	initializeTextureUnits( context() );
+	initializeTextureUnits();
 
 	glShadeModel( GL_SMOOTH );
 	//glShadeModel( GL_LINE_SMOOTH );
@@ -222,9 +222,10 @@ void UVWidget::initializeGL()
 
 	// check for errors
 	GLenum err;
-	while ( ( err = glGetError() ) != GL_NO_ERROR ) {
-		qDebug() << "GL ERROR (init) : " << (const char *) gluErrorString( err );
-	}
+	// FIXME
+	//while ( ( err = glGetError() ) != GL_NO_ERROR ) {
+	//	qDebug() << "GL ERROR (init) : " << (const char *) gluErrorString( err );
+	//}
 }
 
 void UVWidget::resizeGL( int width, int height )
