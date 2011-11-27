@@ -317,10 +317,9 @@ void GLView::updateShaders()
 
 void GLView::initializeGL()
 {
-	initializeTextureUnits();
-	
-	//if ( Renderer::initialize( context() ) )
-		updateShaders();
+	initializeGLFunctions();
+	initializeGLTextureUnits();
+	updateShaders();	
 
 	// check for errors
 	

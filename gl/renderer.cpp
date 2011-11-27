@@ -44,11 +44,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "glproperty.h"
 #include "../options.h"
 
-bool Renderer::initialize( const QGLContext * cx )
-{
-    initializeGLFunctions(cx);
-}
-
 QHash<Renderer::ConditionSingle::Type, QString> Renderer::ConditionSingle::compStrs;
 
 Renderer::ConditionSingle::ConditionSingle( const QString & line, bool neg ) : invert( neg )

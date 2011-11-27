@@ -191,10 +191,10 @@ UVWidget::~UVWidget()
 
 void UVWidget::initializeGL()
 {
+	initializeGLFunctions();
+	initializeGLTextureUnits();
+
 	glMatrixMode( GL_MODELVIEW );
-
-	initializeTextureUnits();
-
 	glShadeModel( GL_SMOOTH );
 	//glShadeModel( GL_LINE_SMOOTH );
 

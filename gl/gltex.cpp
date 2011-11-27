@@ -52,7 +52,7 @@ float GLTools::get_max_anisotropy() const
 	return max_anisotropy;
 }
 
-void GLTools::initializeTextureUnits()
+void GLTools::initializeGLTextureUnits()
 {
 	// detect maximum number of texture slots
 	// (todo: should we use GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS_ARB or similar?)

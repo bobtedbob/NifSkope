@@ -253,7 +253,7 @@ void glProperty( StencilProperty * p ) const;
 void glProperty( BSShaderLightingProperty * p ) const;
 
 float get_max_anisotropy() const;
-void initializeTextureUnits();
+void initializeGLTextureUnits();
 bool activateTextureUnit( int x );
 void resetTextureUnits();
 
