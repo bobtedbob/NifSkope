@@ -44,35 +44,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "glproperty.h"
 #include "../options.h"
 
-bool shader_initialized = false;
-bool shader_ready = false;
-
 bool Renderer::initialize( const QGLContext * cx )
 {
-    if ( !shader_initialized )
-    {
-#ifdef DISABLE_SHADERS
-        shader_ready = false;
-#else
-        // check for OpenGL 2.0 (i.e. shader support)
-        if (hasOpenGLFeature(QGLFunctions::Shaders))
-        {
-            shader_ready = true;
-        }
-        else
-        {
-            shader_ready = false;
-        }
-#endif
-        //qWarning() << "shader support" << shader_ready;
-        shader_initialized = true;
-    }
-    return shader_ready;
-}
-
-bool Renderer::hasShaderSupport()
-{
-	return shader_ready;
+    initializeGLFunctions(cx);
 }
 
 QHash<Renderer::ConditionSingle::Type, QString> Renderer::ConditionSingle::compStrs;
@@ -372,7 +346,7 @@ Renderer::~Renderer()
 
 void Renderer::updateShaders()
 {
-	if ( ! shader_ready )
+	if ( ! hasOpenGLFeature(QGLFunctions::Shaders) )
 		return;
 	
 	releaseShaders();
@@ -420,7 +394,7 @@ void Renderer::updateShaders()
 
 void Renderer::releaseShaders()
 {
-	if ( ! shader_ready )
+	if ( ! hasOpenGLFeature(QGLFunctions::Shaders) )
 		return;
 	
 	qDeleteAll( programs );
@@ -434,7 +408,7 @@ QString Renderer::setupProgram( Mesh * mesh, const QString & hint )
 	PropertyList props;
 	mesh->activeProperties( props );
 	
-	if ( ! shader_ready || ! Options::shaders() )
+	if ( ! hasOpenGLFeature(QGLFunctions::Shaders) || ! Options::shaders() )
 	{
 		setupFixedFunction( mesh, props );
 		return QString( "fixed function pipeline" );
@@ -466,7 +440,7 @@ QString Renderer::setupProgram( Mesh * mesh, const QString & hint )
 
 void Renderer::stopProgram()
 {
-	if ( shader_ready )
+	if ( hasOpenGLFeature(QGLFunctions::Shaders) )
 		glUseProgram( 0 );
 	resetTextureUnits();
 }
