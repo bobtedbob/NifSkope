@@ -123,6 +123,8 @@ public:
 	QList< QVector< quint16 > > tristrips;
 };
 
+//! Any class which does OpenGL operations on a context derives from this class.
+//! It extends QGLFunctions with various utility functions.
 class GLTools : protected QGLFunctions {
 private:
 //! Number of texture units
