@@ -90,6 +90,7 @@ GLView * GLView::create()
 GLView::GLView( const QGLFormat & format, const QGLWidget * shareWidget )
 	: QGLWidget( format, 0, shareWidget )
 {
+	makeCurrent();
 	setFocusPolicy( Qt::ClickFocus );
 	setAttribute( Qt::WA_NoSystemBackground );
 	setAcceptDrops( true );
@@ -317,8 +318,7 @@ void GLView::updateShaders()
 
 void GLView::initializeGL()
 {
-	initializeGLFunctions();
-	initializeGLTextureUnits();
+	GLTools::initializeGL();
 	updateShaders();	
 
 	// check for errors

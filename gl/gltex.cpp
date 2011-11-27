@@ -52,8 +52,9 @@ float GLTools::get_max_anisotropy() const
 	return max_anisotropy;
 }
 
-void GLTools::initializeGLTextureUnits()
+void GLTools::initializeGL()
 {
+	initializeGLFunctions();
 	// detect maximum number of texture slots
 	// (todo: should we use GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS_ARB or similar?)
 	if (hasOpenGLFeature( Multitexture ))

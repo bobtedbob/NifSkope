@@ -523,6 +523,7 @@ void NodeList::sort()
 
 Node::Node( Scene * s, const QModelIndex & index ) : Controllable( s, index ), parent( 0 ), ref( 0 )
 {
+	initializeGL();
 	nodeId = 0;
 	flags.bits = 0;
 }

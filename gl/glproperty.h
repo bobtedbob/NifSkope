@@ -49,7 +49,7 @@ class Property : public Controllable, public GLTools
 {
 protected:
 	//! Protected constructor; see Controllable()
-	Property( Scene * scene, const QModelIndex & index ) : Controllable( scene, index ), ref( 0 ) {}
+	Property( Scene * scene, const QModelIndex & index ) : Controllable( scene, index ), ref( 0 ) { initializeGL(); }
 	
 	int ref;
 	

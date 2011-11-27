@@ -332,6 +332,7 @@ bool Renderer::Program::load( const QString & filepath, Renderer * renderer )
 
 Renderer::Renderer()
 {
+	initializeGL();
 }
 
 Renderer::~Renderer()
