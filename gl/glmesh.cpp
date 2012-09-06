@@ -36,8 +36,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "gltools.h"
 #include "../options.h"
 
-#include <GL/glext.h>
-
 #include <QDebug>
 
 //! \file glmesh.cpp Mesh, MorphController, UVController
